@@ -14,12 +14,25 @@ var aqiData = {};
  */
 function addAqiData() {
     //从输入获取数据
-    var city = $("#aqi-city-input").value,
-        aqi = $("#aqi-value-input").value;
-    //TODO:验证输入
+    var city = $("#aqi-city-input").value.trim(),
+        aqi = $("#aqi-value-input").value.trim();
+    //验证输入
+    if (/^[a-zA-Z]+$/.test(city) || /^[\u4E00-\u9FA5]+$/.test(city)) {
+        if (/^\d+$/.test(aqi)) {
+            if (typeof aqiData[city] != "undefined") {
+                //已存在则不操作
+                alert("该城市信息已存在");
+            } else {
+                //向aqiData中更新一条数据
+                aqiData[city] = aqi;
+            }
+        } else {
+            alert('输入空气指数不正确，必须为正整数');
+        }
 
-    //向aqiData中增加一条数据
-    aqiData[city] = aqi;
+    } else {
+        alert('输入城市名称不正确，必须为纯英文或纯中文');
+    }
 
 }
 
@@ -29,6 +42,7 @@ function addAqiData() {
 function renderAqiList() {
     var rows = "";
     for (var key in aqiData) {
+        //如果存在这条数据
         if (typeof aqiData[key] != "undefined") {
             //向rows中保存一条数据
             rows +=
@@ -58,18 +72,19 @@ function addBtnHandle() {
  * 获取哪个城市数据被删，删除数据，更新表格显示
  */
 function delBtnHandle(target) {
-    // do sth.
+    //删除aqiData中的数据
     var key = target.getAttribute("data_city");
     aqiData[key] = undefined;
+    //更新表格
     renderAqiList();
 }
 
 function init() {
-    // 在这下面给add-btn绑定一个点击事件，点击时触发addBtnHandle函数
+    // 给add-btn绑定一个点击事件，点击时触发addBtnHandle函数
     $("#add-btn").addEventListener("click", function () {
         addBtnHandle();
     }, false);
-    // 想办法给aqi-table中的所有删除按钮绑定事件，触发delBtnHandle函数
+    // 给aqi-table中的所有删除按钮绑定事件，触发delBtnHandle函数
     $("body")[0].addEventListener("click", function (e) {
         e = e || window.event;
         var target = e.target || e.srcElement;
