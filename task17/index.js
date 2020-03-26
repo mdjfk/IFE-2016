@@ -47,27 +47,59 @@ var aqiSourceData = {
 var chartData = {};
 
 // 记录当前页面的表单选项
+// 初始nowSelectCity为aqiSourceData的第一个城市
 var pageState = {
-    nowSelectCity: -1,
-    nowGraTime: "day"
+    nowSelectCity: Object.keys(aqiSourceData)[0],
+    nowGraTime: "month"
 }
 var colors = ["#000080", "#0000FF", "#00BFFF", "#00CED1", "#00FF7F", "#00FFFF", "#483D8B", "#7B68EE", "#C71585", "#FF0000", "#FFA500", "#FFFF00"];
 /**
  * 渲染图表
  */
 function renderChart() {
+    var blocks = "",
+        index = 0;
+    switch (pageState.nowGraTime) {
+        case "day":
+            var city = aqiSourceData[pageState.nowSelectCity];
+            for (var date in city) {
+                index = Math.floor(Math.random() * colors.length);
+                blocks += '<div style="height:' + city[date] + 'px;width:8px;background-color:' + colors[index] + ';" title="' + date + ' aqi:' + city[date] + '"></div>';
+            }
+            break;
+        case "week":
+            var arr_week = chartData[pageState.nowSelectCity]['week'];
+            for (let i = 0; i < arr_week.length; i++) {
+                index = Math.floor(Math.random() * colors.length);
+                blocks += '<div style="height:' + arr_week[i] + 'px;width:25px;background-color:' + colors[index] + ';" title="第' + (i + 1) + ' 周 aqi:' + arr_week[i] + '"></div>';
+            }
+            break;
+        case "month":
+            var arr_month = chartData[pageState.nowSelectCity]['month'];
+            for (let i = 0; i < arr_month.length; i++) {
+                index = Math.floor(Math.random() * colors.length);
+                blocks += '<div style="height:' + arr_month[i] + 'px;width:45px;background-color:' + colors[index] + ';" title="第' + (i + 1) + ' 月 aqi:' + arr_month[i] + '"></div>';
+            }
+            break;
+        default:
+            break;
+    }
 
+    $("#aqi-chart-wrap").innerHTML = blocks;
 }
 
 /**
  * 日、周、月的radio事件点击时的处理函数
  */
-function graTimeChange() {
+function graTimeChange(radio) {
     // 确定是否选项发生了变化
+    if (!radio.checked) {
+        // 设置对应数据
+        pageState.nowGraTime = radio.value;
+        // 调用图表渲染函数
+        renderChart();
+    }
 
-    // 设置对应数据
-
-    // 调用图表渲染函数
 }
 
 /**
@@ -78,7 +110,7 @@ function citySelectChange(option) {
     if ($("#city-select").value != option.innerHTML) {
         //选项发生了变化
         // 更新对应数据
-        pageState.nowSelectCity = option.getAttribute("data_no");
+        pageState.nowSelectCity = option.innerHTML;
         // 调用图表渲染函数
         renderChart();
     }
@@ -89,7 +121,13 @@ function citySelectChange(option) {
  * 初始化日、周、月的radio事件，当点击时，调用函数graTimeChange
  */
 function initGraTimeForm() {
-
+    $("#form-gra-time").addEventListener("click", function (e) {
+        e = e || window.event;
+        var target = e.target || e.srcElement;
+        if (target.nodeName.toUpperCase() == "INPUT") {
+            graTimeChange(target);
+        }
+    }, false);
 }
 
 /**
@@ -101,14 +139,16 @@ function initCitySelector() {
         cnt = 0;
     for (var key in aqiSourceData) {
         options +=
-            "<option data_no=" + (cnt++) + ">" + key + "</option>";
+            "<option>" + key + "</option>";
     }
     $("#city-select").innerHTML = options;
     // 给select设置事件，当选项发生变化时调用函数citySelectChange
     $("#city-select").addEventListener("click", function (e) {
         e = e || window.event;
         var target = e.target || e.srcElement;
-        citySelectChange(target);
+        if (target.nodeName.toUpperCase() == "OPTION") {
+            citySelectChange(target);
+        }
     }, false);
 
 
@@ -123,7 +163,8 @@ function initAqiChartData() {
     var weekTotal = 0,
         weekCnt = 0,
         monthTotal = 0,
-        monthCnt = 0;
+        monthCnt = 0,
+        lastMonth = 0;
     var week = [],
         month = [];
     for (var city in aqiSourceData) {
@@ -132,19 +173,26 @@ function initAqiChartData() {
                 weekDay = new Date(ymd[0], +ymd[1] - 1, ymd[2]).getDay();
             weekTotal += aqiSourceData[city][date];
             weekCnt++;
-            monthTotal += aqiSourceData[city][date];
-            monthCnt++;
+            //周日
             if (weekDay == 0) {
                 week.push(Math.round(weekTotal / weekCnt));
                 weekTotal = weekCnt = 0;
             }
-            // 一个月的最后一天
-            //if () {
-
-            // }
+            // 一个月的第一天（不一定是1号）
+            if (+ymd[1] != lastMonth) {
+                month.push(monthTotal);
+                monthTotal = monthCnt = 0;
+                lastMonth = +ymd[1];
+            }
+            monthTotal += aqiSourceData[city][date];
+            monthCnt++;
 
         }
-        chartData[city] = week;
+        chartData[city] = {
+            'week': week,
+            //month第一项是0，需移除
+            'month': month.shift()
+        };
     }
 }
 
@@ -155,6 +203,9 @@ function init() {
     initGraTimeForm();
     initCitySelector();
     initAqiChartData();
+    console.log(chartData);
+    // renderChart();
+
 }
 
 window.onload = function () {

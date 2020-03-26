@@ -1,0 +1,41 @@
+#aqi-chart-wrap {
+    width: 1340px;
+    height: 800px;
+    margin: 10px auto;
+    border: 1px solid lightgrey;
+    box-shadow: 0px 0px 5px #999999;
+    border-radius: 10px;
+
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-evenly;
+}
+
+#aqi-chart-wrap div {
+    width: 15px;
+}
+
+#form-gra-time {
+    border-radius: 10px;
+    width: 1200px;
+    height: 70px;
+    margin: 10px auto;
+}
+
+#form-gra-time div {
+    display: inline-block;
+    margin: 8px 20px;
+}
+
+.choose {
+    width: 200px;
+    height: 40px;
+    font-size: 24px;
+}
+
+#city-select {
+    width: 100px;
+    height: 28px;
+    font-size: 18px;
+    padding-left: 6px;
+}

@@ -4,30 +4,47 @@
 <head>
     <meta charset="utf-8">
     <title>IFE JavaScript Task 01</title>
-    <script src="index.css"></script>
+
+    <link href="index.css" rel="stylesheet">
 </head>
 
 <body>
+    <!-- <div class="layout">
+        <fieldset>
+            <legend>请选择查看的城市：</legend>
+            <select id="city-select">
+                <option>北京</option>
+            </select>
+        </fieldset>
+        <div class="aqi-chart-wrap">
+
+        </div>
+    </div> -->
+
     <fieldset id="form-gra-time">
-        <legend>请选择日期粒度：</legend>
-        <label>日<input name="gra-time" value="day" type="radio" checked="checked"></label>
-        <label>周<input name="gra-time" value="week" type="radio"></label>
-        <label>月<input name="gra-time" value="month" type="radio"></label>
+        <legend>请选择日期粒度及城市：</legend>
+        <div class="choose">
+            <label><input name="gra-time" value="day" type="radio" checked="checked">日</label>
+            <label><input name="gra-time" value="week" type="radio">周</label>
+            <label><input name="gra-time" value="month" type="radio">月</label>
+
+        </div>
+        <div>
+            <select id="city-select">
+                <option>北京</option>
+            </select>
+        </div>
     </fieldset>
 
-    <fieldset>
-        <legend>请选择查看的城市：</legend>
-        <select id="city-select">
-            <option>北京</option>
-        </select>
-    </fieldset>
-
-    <div class="aqi-chart-wrap">
+    <div id="aqi-chart-wrap">
+        <!-- <div style="height: 426px;background-color: blue;" title="01-01"></div>
+        <div style="height: 426px;background-color: yellow;">
+        </div>
+        <div style="height: 426px;background-color: green;">
+        </div> -->
+        <script src="index.js"></script>
+        <script src="utility.js"></script>
     </div>
-
-    <script src="index.js"></script>
-    <script src="utility.js"></script>
-
 </body>
 
 </html>
