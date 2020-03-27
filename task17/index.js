@@ -199,8 +199,6 @@ function initAqiChartData() {
 
         }
 
-        //month第一项需移除
-        month.shift();
         chartData[city] = {
             'week': week,
             'month': month
