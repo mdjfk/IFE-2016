@@ -15,14 +15,14 @@
     width: 15px;
 }
 
-#form-gra-time {
+#choose-block {
     border-radius: 10px;
-    width: 1200px;
+    width: 1310px;
     height: 70px;
     margin: 10px auto;
 }
 
-#form-gra-time div {
+#choose-block div {
     display: inline-block;
     margin: 8px 20px;
 }
@@ -38,4 +38,11 @@
     height: 28px;
     font-size: 18px;
     padding-left: 6px;
+    cursor: pointer;
+}
+
+.choose label,
+.choose input {
+    cursor: pointer;
+
 }
