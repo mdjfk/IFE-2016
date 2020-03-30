@@ -1,0 +1,20 @@
+.queue {
+    /* position: relative; */
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: start;
+}
+
+.queue div {
+    color: white;
+    font-size: 36px;
+    background-color: pink;
+    padding: 6px 10px;
+    margin: 5px;
+    cursor: pointer;
+}
+
+#btnGroup {
+    margin-top: 10px;
+}
