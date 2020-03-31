@@ -54,7 +54,11 @@ function init() {
                 }
 
             } else {
-                alert("请输入一个正数，可以为整数或小数");
+                if (target.id == "leftIn" || target.id == "rightIn") {
+                    alert("请输入一个正数，可以为整数或小数");
+                } else if (myQueue.length == 0) {
+                    alert('队列已经是空的了');
+                }
             }
 
         }
