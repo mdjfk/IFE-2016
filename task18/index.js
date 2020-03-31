@@ -33,13 +33,21 @@ function init() {
                         break;
                     case "leftOut":
                         //左侧出响应事件
-                        alert(myQueue.shift());
-                        showQueue();
+                        if (myQueue.length > 0) {
+                            alert(myQueue.shift());
+                            showQueue();
+                        } else {
+                            alert('队列已经是空的了');
+                        }
                         break;
                     case "rightOut":
                         //右侧出响应事件
-                        alert(myQueue.pop());
-                        showQueue();
+                        if (myQueue.length > 0) {
+                            alert(myQueue.pop());
+                            showQueue();
+                        } else {
+                            alert('队列已经是空的了');
+                        }
                         break;
                     default:
                         break;
