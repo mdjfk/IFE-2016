@@ -10,23 +10,9 @@ function showQueue() {
     $("#queue").innerHTML = str;
 }
 
-function buildQueue(func, msg) {
-    var input = $("#input").value.trim();
-    if (/^\d+$/.test(input)) {
-        //验证为数字
-        if (typeof Array[func] == "function") {
-            Array[func].call(myQueue, +input);
-            // myQueue.func(+input);
-        }
-        showQueue();
-    } else {
-        alert(msg);
-    }
-}
-
 //初始化button事件
 function init() {
-    //4个按钮的响应
+    // 4个按钮的响应
     addEvent($("#btnGroup"), "click", function (e) {
         e = e || window.event;
         var target = e.target || e.srcElement;
@@ -47,12 +33,12 @@ function init() {
                         break;
                     case "leftOut":
                         //左侧出响应事件
-                        myQueue.shift();
+                        alert(myQueue.shift());
                         showQueue();
                         break;
                     case "rightOut":
                         //右侧出响应事件
-                        myQueue.pop();
+                        alert(myQueue.pop());
                         showQueue();
                         break;
                     default:
@@ -71,28 +57,13 @@ function init() {
         e = e || window.event;
         var target = e.target || e.srcElement;
         if (target.className.indexOf("queue") == -1 && target.nodeName.toUpperCase() == "DIV") {
-            //TODO:
+            var i = target.getAttribute("data_i");
+            myQueue.splice(i, 1);
+            target.remove();
+            // showQueue();
         }
     });
-    // //左侧入响应事件
-    // addEvent($("#leftIn"), "click", function () {
-    //     buildQueue(Array.unshift, info);
-    // });
 
-    // //右侧入响应事件
-    // addEvent($("#rightIn"), "click", function () {
-    //     buildQueue(push, info);
-    // });
-
-    // //左侧出响应事件
-    // addEvent($("#leftOut"), "click", function () {
-    //     buildQueue(shift, info);
-    // });
-
-    // //右侧出响应事件
-    // addEvent($("#rightOut"), "click", function () {
-    //     buildQueue(pop, info);
-    // });
 };
 
 window.onload = function () {
