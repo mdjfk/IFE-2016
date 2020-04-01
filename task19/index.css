@@ -1,0 +1,17 @@
+.queue {
+    height: 100px;
+    margin-top: 20px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-start;
+}
+
+.queue div {
+    width: 20px;
+    margin: 3px;
+    background-color: pink;
+}
+
+#btnGroup {
+    margin-top: 10px;
+}
