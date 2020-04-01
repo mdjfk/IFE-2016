@@ -10,60 +10,50 @@ function showQueue() {
     $("#queue").innerHTML = str;
 }
 
+//数据入队列
+function queueIn(func) {
+    var input = $("#input").value.trim();
+    if (/^\d+$/.test(input)) {
+        if (typeof func == "function") {
+            func.call(myQueue, +input);
+        }
+        showQueue();
+    } else {
+        alert("请输入一个正数，可以为整数或小数");
+    }
+}
+
+//数据出队列
+function queueOut(func) {
+    if (myQueue.length > 0) {
+        if (typeof func == "function") {
+            alert(func.call(myQueue));
+        }
+        showQueue();
+    } else {
+        alert('队列已经是空的了');
+    }
+}
+
 //初始化button事件
 function init() {
     // 4个按钮的响应
-    addEvent($("#btnGroup"), "click", function (e) {
-        e = e || window.event;
-        var target = e.target || e.srcElement;
-        if (target.nodeName.toUpperCase() == "BUTTON") {
-            var input = $("#input").value.trim();
-            if (/^\d+$/.test(input)) {
-                //验证为数字
-                switch (target.id) {
-                    case "leftIn":
-                        //左侧入响应事件
-                        myQueue.unshift(+input);
-                        showQueue();
-                        break;
-                    case "rightIn":
-                        //右侧入响应事件
-                        myQueue.push(+input);
-                        showQueue();
-                        break;
-                    case "leftOut":
-                        //左侧出响应事件
-                        if (myQueue.length > 0) {
-                            alert(myQueue.shift());
-                            showQueue();
-                        } else {
-                            alert('队列已经是空的了');
-                        }
-                        break;
-                    case "rightOut":
-                        //右侧出响应事件
-                        if (myQueue.length > 0) {
-                            alert(myQueue.pop());
-                            showQueue();
-                        } else {
-                            alert('队列已经是空的了');
-                        }
-                        break;
-                    default:
-                        break;
-                }
-
-            } else {
-                if (target.id == "leftIn" || target.id == "rightIn") {
-                    alert("请输入一个正数，可以为整数或小数");
-                } else if (myQueue.length == 0) {
-                    alert('队列已经是空的了');
-                }
-            }
-
-        }
-
+    addEvent($("#leftIn"), "click", function () {
+        queueIn(Array.prototype.unshift);
     });
+
+    addEvent($("#rightIn"), "click", function () {
+        queueIn(Array.prototype.push);
+    });
+
+    addEvent($("#leftOut"), "click", function () {
+        queueOut(Array.prototype.shift);
+    });
+
+    addEvent($("#rightOut"), "click", function () {
+        queueOut(Array.prototype.pop);
+    });
+
     //点击队列中元素的响应
     addEvent($("#queue"), "click", function (e) {
         e = e || window.event;
@@ -72,10 +62,8 @@ function init() {
             var i = target.getAttribute("data_i");
             myQueue.splice(i, 1);
             target.remove();
-            // showQueue();
         }
     });
-
 };
 
 window.onload = function () {
