@@ -8,22 +8,20 @@
 </head>
 
 <body>
-    <input type="text" id="input">
+    <input type="text" id="input" placeholder="input queue element">
+    <input type="text" id="interval" placeholder="set sort interval (ms)">
     <div id="btnGroup">
-        <button id="leftIn">左侧入</button>
-        <button id="rightIn">右侧入</button>
-        <button id="leftOut">左侧出</button>
-        <button id="rightOut">右侧出</button>
+        <button id="leftIn">Left in (unshift)</button>
+        <button id="rightIn">Right in (push)</button>
+        <button id="leftOut">Left out (shift)</button>
+        <button id="rightOut">Right out (pop)</button>
+        <div style="height: 10px;"></div>
         <button id="sort">Sort</button>
-        <button id="empty">清空</button>
+        <button id="random">Generate random queue</button>
+        <button id="empty">Empty</button>
     </div>
 
     <div class="queue" id="queue">
-        <!-- <div style="height: 30px;"></div>
-        <div style="height: 40px;"></div>
-        <div style="height: 50px;"></div>
-        <div style="height: 70px;"></div>
-        <div style="height: 100px;"></div> -->
     </div>
 
     <script src="index.js"></script>

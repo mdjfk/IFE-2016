@@ -1,5 +1,5 @@
 //队列
-var myQueue = [81, 48, 56, 78, 36, 100, 68];
+var myQueue = [];
 
 //显示队列
 function showQueue() {
@@ -21,10 +21,10 @@ function queueIn(func) {
             }
             showQueue();
         } else {
-            alert("队列已有60个元素");
+            alert("There are 60 elements in the queue");
         }
     } else {
-        alert("请输入一个10-100的正整数");
+        alert("Please input a positive integer within the range of [10,100]");
     }
 }
 
@@ -36,8 +36,16 @@ function queueOut(func) {
         }
         showQueue();
     } else {
-        alert('队列已经是空的了');
+        alert('The queue is empty');
     }
+}
+
+//生成随机队列
+function randomQueue(num) {
+    for (var i = 0; i < num; i++) {
+        myQueue.push(Math.floor(Math.random() * 91 + 10));
+    }
+    showQueue();
 }
 
 //初始化button事件
@@ -58,17 +66,25 @@ function init() {
     addEvent($("#rightOut"), "click", function () {
         queueOut(Array.prototype.pop);
     });
+
     //sort
     addEvent($("#sort"), "click", function () {
         var len = myQueue.length,
-            cnt = 0;
+            cnt = 0,
+            interval = $("#interval").value || 700,
+            div = $("#queue").getElementsByTagName("div"),
+            divLen = div.length;
         for (var i = 0; i < len - 1; i++) {
             for (var j = i + 1; j < len; j++) {
-                // setTimeout(function () {
-
-                //     $("#queue").childNodes[i].style.backgroundColor = "red";
-                //     $("#queue").childNodes[j].style.backgroundColor = "red";
-                // }, ++cnt * 1000);
+                var markRed = function (a, b) {
+                    return function () {
+                        for (var k = 0; k < divLen; k++) {
+                            div[k].style.backgroundColor = (k == a || k == b) ? "red" : "pink";
+                        }
+                    };
+                };
+                //将正在比较元素的颜色标记为红色
+                setTimeout(markRed(i, j), cnt++ * interval);
 
                 if (myQueue[i] > myQueue[j]) {
                     //交换
@@ -77,17 +93,32 @@ function init() {
                     myQueue[j] = temp;
 
                     //间隔1000ms显示排序过程
-                    setTimeout(function (arr) {
+                    setTimeout(function (arr, i, j) {
                         var myArr = arr.concat();
                         return function () {
+                            //显示交换后的队列
                             showQueue(myArr);
+                            //将正在比较元素的颜色标记为红色
+                            markRed(i, j)();
                         };
-                    }(myQueue), ++cnt * 1000);
+                    }(myQueue, i, j), cnt++ * interval);
                 }
             }
         }
+
+        setTimeout(function () {
+            //重新显示（把所有元素都标记成pink）
+            showQueue();
+        }, cnt++ * interval);
+
     });
-    //empty
+
+    //random button
+    addEvent($("#random"), "click", function () {
+        randomQueue(8);
+    });
+
+    //empty button
     addEvent($("#empty"), "click", function () {
         myQueue.length = 0;
         showQueue();
@@ -97,5 +128,4 @@ function init() {
 
 window.onload = function () {
     init();
-    showQueue();
 };
