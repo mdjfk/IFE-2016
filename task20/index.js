@@ -12,15 +12,21 @@ function showQueue() {
 
 //数据入队列
 function queueIn(func) {
-    var input = $("#input").value.trim();
-    if (/^\d+$/.test(input)) {
-        if (typeof func == "function") {
-            func.call(myQueue, +input);
+    var input = $("#input").value.trim().split(/\s|、|，|,/);
+    input.forEach(function (item) {
+        if (!/^[0-9a-zA-z]|[\u4e00-\u9fff]$/.test(item)) {
+            alert("输入项只能为数字、中文、英文");
         }
-        showQueue();
-    } else {
-        alert("请输入一个正数，可以为整数或小数");
-    }
+    });
+
+    // if (/^\d+$/.test(input)) {
+    //     if (typeof func == "function") {
+    //         func.call(myQueue, +input);
+    //     }
+    //     showQueue();
+    // } else {
+    //     alert("请输入一个正数，可以为整数或小数");
+    // }
 }
 
 //数据出队列
